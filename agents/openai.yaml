@@ -1,0 +1,7 @@
+interface:
+  display_name: "IELTSBro Exporter"
+  short_description: "只读导出并核验雅思哥学习记录、错题、解析与阅读文章备份"
+  default_prompt: "Use $ieltsbro-exporter to export my authorized IELTSBro learning records into this workspace."
+
+policy:
+  allow_implicit_invocation: true

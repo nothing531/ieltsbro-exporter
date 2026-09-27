@@ -1,5 +1,7 @@
 param(
-    [string] $Profile
+    [string] $Profile,
+    [string] $Out,
+    [switch] $CheckOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -20,11 +22,19 @@ if (-not $python) {
 }
 
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-$outDir = Join-Path $scriptDir "export-$stamp"
+$outDir = if ($Out) {
+    $Out
+} else {
+    Join-Path (Get-Location) "ieltsbro-export-$stamp"
+}
 $arguments = @((Join-Path $scriptDir 'ieltsbro_export.py'), '--out', $outDir)
 
 if ($Profile) {
     $arguments += @('--profile', $Profile)
+}
+
+if ($CheckOnly) {
+    $arguments += '--check-only'
 }
 
 & $python @arguments
@@ -32,4 +42,8 @@ if ($LASTEXITCODE -ne 0) {
     throw "导出失败，退出码：$LASTEXITCODE"
 }
 
-Write-Host "`n已保存到：$outDir" -ForegroundColor Green
+if ($CheckOnly) {
+    Write-Host "`n登录态与只读接口验证成功。" -ForegroundColor Green
+} else {
+    Write-Host "`n已保存到：$outDir" -ForegroundColor Green
+}

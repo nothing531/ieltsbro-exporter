@@ -30,7 +30,7 @@ from typing import Any, Iterable, Iterator
 DEFAULT_API = "https://hcp-server.ieltsbro.com"
 CLIENT_SOURCE = "3"
 CLIENT_VERSION = "3.2.0"
-TOOL_VERSION = "0.1.0"
+TOOL_VERSION = "0.2.0"
 PART_NAMES = {1: "listening", 2: "speaking", 3: "reading", 4: "writing"}
 
 

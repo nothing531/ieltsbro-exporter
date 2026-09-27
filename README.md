@@ -4,6 +4,8 @@
 
 一个非官方、只读的命令行工具，用于备份**你自己账号**中的雅思哥 PC 端学习记录。
 
+本仓库同时是一个可直接安装的 Codex/Agent Skill，可通过 `$ieltsbro-exporter` 调用。
+
 它可以导出：
 
 - 单项练习与完整模考记录
@@ -51,9 +53,31 @@ Remove-Item Env:IELTSBRO_TOKEN
 python .\ieltsbro_export.py --profile "$env:APPDATA\雅思哥机考软件" --check-only
 ```
 
+## 安装为 Skill
+
+Codex 默认技能目录：
+
+```powershell
+git clone https://github.com/nothing531/ieltsbro-exporter.git "$env:USERPROFILE\.codex\skills\ieltsbro-exporter"
+```
+
+如果你的 Codex 会从共享 Agent 技能目录导入，也可以安装到：
+
+```powershell
+git clone https://github.com/nothing531/ieltsbro-exporter.git "$env:USERPROFILE\.agents\skills\ieltsbro-exporter"
+```
+
+重新打开 Codex 后，可以直接说“导出我的雅思哥错题”，或显式调用：
+
+```text
+$ieltsbro-exporter 导出我的雅思哥学习记录到当前工作区
+```
+
+Skill 仍会在读取本地登录令牌前确认授权，并且不会自动公开或上传导出数据。
+
 ## 输出文件
 
-每次运行会创建一个 `export-日期时间` 目录：
+默认会在当前目录创建一个 `ieltsbro-export-日期时间` 文件夹；也可以通过 `-Out` 或 `--out` 指定位置。
 
 | 文件 | 内容 |
 |---|---|
