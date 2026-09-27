@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+.env.*
+
+# Personal exports can include account data and copyrighted study content.
+export-*/
+ieltsbro-export-*/
+
+# Common local/editor files.
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
