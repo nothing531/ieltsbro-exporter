@@ -30,7 +30,7 @@ from typing import Any, Iterable, Iterator
 DEFAULT_API = "https://hcp-server.ieltsbro.com"
 CLIENT_SOURCE = "3"
 CLIENT_VERSION = "3.2.0"
-TOOL_VERSION = "0.2.0"
+TOOL_VERSION = "0.2.1"
 PART_NAMES = {1: "listening", 2: "speaking", 3: "reading", 4: "writing"}
 
 
@@ -185,6 +185,9 @@ def find_list(payload: Any) -> list[dict[str, Any]]:
         return [item for item in payload if isinstance(item, dict)]
     if not isinstance(payload, dict):
         return []
+    page_data = payload.get("pageData")
+    if isinstance(page_data, dict):
+        return find_list(page_data)
     for key in ("list", "records", "rows", "data"):
         value = payload.get(key)
         if isinstance(value, list):
@@ -195,6 +198,9 @@ def find_list(payload: Any) -> list[dict[str, Any]]:
 def find_total(payload: Any) -> int | None:
     if not isinstance(payload, dict):
         return len(payload) if isinstance(payload, list) else None
+    page_data = payload.get("pageData")
+    if isinstance(page_data, dict):
+        return find_total(page_data)
     for key in ("total", "totalCount", "count"):
         value = payload.get(key)
         if isinstance(value, int):

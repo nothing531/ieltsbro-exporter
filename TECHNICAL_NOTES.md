@@ -15,6 +15,10 @@
 
 请求使用 PC 客户端的 `source: 3`、`version: 3.2.0` 头和用户自己的 Bearer 令牌。这些不是公开承诺稳定的开放 API。
 
+完整模考列表的分页结果位于外层响应的 `pageData` 字段中，当前结构为
+`{"pageData":{"list":[...],"total":...},"mockTestQuantity":...,"winRate":...}`。
+导出器会先解开这一层，再按 `list` 和 `total` 分页读取。
+
 ## 本地登录态
 
 Electron/Chromium 客户端把登录状态保存在用户数据目录的 Local Storage 中。只有显式传入 `--profile` 时，工具才会在该目录下查找 `user_storage.token` 对应的令牌值。候选令牌会先通过用户信息读取接口验证，且不会落盘或打印。

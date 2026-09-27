@@ -73,6 +73,28 @@ class ExporterTests(unittest.TestCase):
             (leveldb / "000003.log").write_bytes(b'prefix\x01{"token":"abc.def.ghi"}suffix')
             self.assertEqual(exporter.token_from_chromium_profile(pathlib.Path(directory)), "abc.def.ghi")
 
+    def test_fetch_pages_unwraps_exam_page_data(self):
+        payloads = {
+            1: {
+                "mockTestQuantity": 2,
+                "pageData": {"list": [{"examInfoId": "1"}], "total": 2},
+                "winRate": "0%",
+            },
+            2: {
+                "mockTestQuantity": 2,
+                "pageData": {"list": [{"examInfoId": "2"}], "total": 2},
+                "winRate": "0%",
+            },
+        }
+
+        result = exporter.fetch_pages(
+            lambda page: payloads[page],
+            page_size_hint=1,
+            max_pages=3,
+        )
+
+        self.assertEqual([item["examInfoId"] for item in result], ["1", "2"])
+
 
 if __name__ == "__main__":
     unittest.main()
